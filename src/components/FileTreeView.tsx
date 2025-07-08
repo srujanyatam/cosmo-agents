@@ -304,10 +304,10 @@ const FileTreeView: React.FC<FileTreeViewProps> = ({
             />
             <span className="font-medium">Select All</span>
           </div>
-          {renderSection('tables', 'Tables', tables)}
-          {renderSection('procedures', 'Procedures', procedures)}
-          {renderSection('triggers', 'Triggers', triggers)}
-          {others.length > 0 && renderSection('other', 'Other Files', others)}
+          {renderSection('tables', 'Tables', filteredFiles.filter(f => f.type === 'table'))}
+          {renderSection('procedures', 'Procedures', filteredFiles.filter(f => f.type === 'procedure'))}
+          {renderSection('triggers', 'Triggers', filteredFiles.filter(f => f.type === 'trigger'))}
+          {others.length > 0 && renderSection('other', 'Other Files', filteredFiles.filter(f => f.type === 'other'))}
         </div>
       </CardContent>
     </Card>

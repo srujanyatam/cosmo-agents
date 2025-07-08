@@ -47,7 +47,6 @@ const Dashboard = () => {
   const [report, setReport] = useState<ConversionReport | null>(null);
   const [showReport, setShowReport] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
-  const [customPrompt, setCustomPrompt] = useState<string>('');
   const [showWizard, setShowWizard] = useState(false);
   const [wizardStep, setWizardStep] = useState(0);
 
@@ -61,7 +60,7 @@ const Dashboard = () => {
     handleConvertAll,
     handleFixFile,
     handleGenerateReport,
-  } = useConversionLogic(files, setFiles, setConversionResults, selectedAiModel, customPrompt);
+  } = useConversionLogic(files, setFiles, setConversionResults, selectedAiModel);
 
   useEffect(() => {
     if (!loading && !user) {
@@ -80,9 +79,7 @@ const Dashboard = () => {
   useEffect(() => {
     // Expose a reconvert handler for ConversionViewer
     (window as any).handleFileReconvert = async (fileId: string, customPrompt: string) => {
-      setCustomPrompt(customPrompt); // Set the custom prompt for this reconversion
       await handleConvertFile(fileId);
-      setCustomPrompt(''); // Reset after reconversion
     };
     return () => {
       delete (window as any).handleFileReconvert;
@@ -231,16 +228,6 @@ const Dashboard = () => {
           </TabsContent>
 
           <TabsContent value="conversion">
-            <div className="mb-4 max-w-2xl mx-auto">
-              <label htmlFor="customPrompt" className="block text-sm font-medium text-gray-700 mb-1">Custom AI Prompt (optional)</label>
-              <textarea
-                id="customPrompt"
-                value={customPrompt}
-                onChange={e => setCustomPrompt(e.target.value)}
-                placeholder="E.g., Focus on optimizing performance, or use Oracle 12c+ features, etc."
-                className="w-full p-2 border border-gray-300 rounded text-sm min-h-[60px]"
-              />
-            </div>
             <ConversionPanel
                     files={files}
               selectedFile={selectedFile}
